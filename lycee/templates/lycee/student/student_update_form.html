@@ -1,0 +1,22 @@
+{% extends "master.html" %}
+
+{% if student %}
+    {% block title %}
+        <h3>Edit student data</h3>
+    {% endblock %}
+
+    {% block content %}
+      <form method="post" class="mt-3">
+        {% csrf_token %}
+        
+        {{ form.as_p }}
+
+        <div class="boutons mb-3">
+            <button class="button radius btn-alert left" type="cancel"><a href="/lycee/">Cancel</a></button>
+            <button class="button radius btn-success right" type="submit">Submit</button>
+        </div>
+    </form>
+    {% endblock %}
+{% else %}
+     <p>No student to show.</p>
+{% endif %}

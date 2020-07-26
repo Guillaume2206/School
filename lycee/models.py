@@ -21,6 +21,8 @@ class Cursus(models.Model):
     null=True,
     default='0000-00001'
   )
+  def __str__(self):
+    return self.name + " " + self.scholar_year
 
 class Student(models.Model):
   first_name = models.CharField(
@@ -70,3 +72,35 @@ class Student(models.Model):
     on_delete=models.CASCADE, # necessaire selon la version de Django
     null=True
     )
+  def __str__(self):
+    return self.first_name + " " + self.last_name + " (" + self.email + ")"
+
+class Presence(models.Model):
+  reason = models.CharField(
+    verbose_name="reason",
+    help_text="missing reason",
+    blank=True,
+    null=False, # pas de champ null (a conjuguer avec default
+    default="",
+    max_length=255, # taille maximale du champ
+  )
+  isMissing = models.CharField(
+    verbose_name="reason",
+    help_text="missing True or False",
+    blank=False,
+    null=False, # pas de champ null (a conjuguer avec default
+    default=True,
+    max_length=255, # taille maximale du champ
+  )
+  date = models.CharField(
+    verbose_name="date",
+    help_text="missing date",
+    blank=False,
+    null=True,
+    max_length=255, # taille maximale du champ
+  )
+  student = models.ForeignKey(
+    Student,
+    on_delete=models.CASCADE,
+    null=False
+  )

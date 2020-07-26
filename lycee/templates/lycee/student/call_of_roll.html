@@ -1,0 +1,29 @@
+{% extends "master.html" %}
+
+
+{% if student_list %}
+    {% block title %}
+        <h3>Call of Roll</h3>
+    {% endblock %}
+    
+    {% block content %}
+      <div class="container">
+        <div class="row">
+          <div class = "col-sm-5">
+            <form method="post">
+              Date : <input id="date" type="date" class="mt-3 mb-3">
+              <br>
+              {% for student in student_list %}
+                <input type="checkbox" id="{{student.id}}" name="{{student.id}}">
+                <label for="{{student.id}}">{{student.first_name }} {{student.last_name}}</label>
+                <br>
+              {% endfor %}
+              
+            </form>
+          </div>
+        </div>
+      </div>
+    {% endblock %}
+{% else %}
+     <p>No student to show.</p>
+{% endif %}
