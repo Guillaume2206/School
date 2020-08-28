@@ -1,4 +1,10 @@
 from django.db import models
+from django import forms
+
+AM_OR_PM = (
+    ("MORNING", "Morning"),
+    ("AFTERNOON", "Afternoon"),
+)
 
 # Create your models here.
 class Cursus(models.Model):
@@ -76,21 +82,10 @@ class Student(models.Model):
     return self.first_name + " " + self.last_name + " (" + self.email + ")"
 
 class Presence(models.Model):
-  reason = models.CharField(
-    verbose_name="reason",
-    help_text="missing reason",
-    blank=True,
-    null=False, # pas de champ null (a conjuguer avec default
-    default="",
-    max_length=255, # taille maximale du champ
-  )
-  isMissing = models.CharField(
-    verbose_name="reason",
-    help_text="missing True or False",
-    blank=False,
-    null=False, # pas de champ null (a conjuguer avec default
-    default=True,
-    max_length=255, # taille maximale du champ
+  student = models.ForeignKey(
+    Student,
+    on_delete=models.CASCADE,
+    null=False
   )
   date = models.CharField(
     verbose_name="date",
@@ -99,8 +94,39 @@ class Presence(models.Model):
     null=True,
     max_length=255, # taille maximale du champ
   )
+  isMissing = models.BooleanField(
+    verbose_name = "Missing"
+  )
+  reason = models.CharField(
+    verbose_name="Reason",
+    help_text="missing reason",
+    blank=True,
+    null=False, # pas de champ null (a conjuguer avec default
+    default=" ",
+    max_length=255, # taille maximale du champ
+  )
+
+class CallOfRoll(models.Model):
   student = models.ForeignKey(
     Student,
     on_delete=models.CASCADE,
     null=False
   )
+  date = models.DateField(
+    verbose_name="date",
+    blank=False,
+    null=True,
+    max_length=255, # taille maximale du champ
+  )
+  dayhalf = models.CharField(
+    max_length=9, choices=AM_OR_PM,
+    default='1'
+  )
+  isPresent = models.BooleanField(
+    verbose_name = "Present"
+  )
+  cursus = models.ForeignKey(
+    Cursus,
+    on_delete=models.CASCADE, # necessaire selon la version de Django
+    null=True
+)

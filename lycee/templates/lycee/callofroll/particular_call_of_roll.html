@@ -1,18 +1,18 @@
 {% extends "master.html" %}
 {% block title %}
-    <h3>Create new Student</h3>
+    <h3>Particular Call of Roll</h3>
 {% endblock %}
 
 {% block content %}
 
     {% load crispy_forms_tags %}
 
-    <form method="post" class="mb-4">
+    <form method="post">
         {% csrf_token %}
-        
+
         {{ form|crispy }}
 
-        <div class="boutons row">
+         <div class="boutons row">
             <button class="btn btn-outline-primary mr-4"><a href="/lycee/">Cancel</a></button>
             <button type="submit" class="btn btn-success radius d-flex">Submit</button>
         </div>

@@ -1,7 +1,7 @@
 from django.contrib import admin
-from .models import Student,Cursus
+from .models import Student,Cursus,Presence,CallOfRoll
 
-admin.site.site_header="Page d'administration du lycée"
+admin.site.site_header="Admin Page"
 # Register your models here.
 class studentAdmin(admin.ModelAdmin):
   list_display = ("first_name", "last_name", "email", 'phone' )
@@ -9,5 +9,13 @@ class studentAdmin(admin.ModelAdmin):
 class CursusAdmin(admin.ModelAdmin):
   fields = ["scholar_year","name","year_from_bac"]
 
+class PresenceAdmin(admin.ModelAdmin):
+  fields = ["student","date","startTime","reason"]
+
+class CallOfRollAdmin(admin.ModelAdmin):
+  fields = ["student","date","dayhalf","isPresent"]
+
 admin.site.register(Student,studentAdmin)
 admin.site.register(Cursus,CursusAdmin)
+admin.site.register(Presence,PresenceAdmin)
+admin.site.register(CallOfRoll,CallOfRollAdmin)

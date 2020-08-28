@@ -1,0 +1,17 @@
+{% extends "master.html" %}
+
+    {% block title %}
+        <h3>Call of Roll : {{cursus_name}}</h3>
+    {% endblock %}
+    
+    {% block content %}
+      <div class="container">
+        <div class="row">
+          <div class = "col">
+            Their is already a call of roll for this {{dayhalf}} <br> 
+            You can go to the call of roll history page to see and edit the call of roll <br> <br>
+            <button class="btn btn-outline-primary mr-4"><a href="/lycee/history/">Call of Roll History</a></button>
+          </div>
+        </div>
+      </div>
+    {% endblock %}

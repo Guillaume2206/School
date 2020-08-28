@@ -1,0 +1,21 @@
+{% extends "lycee/callofroll/call_of_roll_history.html" %}
+
+{% block inputdate %}
+      <h4>{{defaultdate}} : {{cursus.name}}</h4>
+{% endblock %}
+
+{% block search %}
+    <div class="row">
+      <div class="col-4">
+        {% for call in calls %}
+          {% if call.isPresent %}
+            <input type="checkbox" checked disabled>
+          {% else %}
+            <input type="checkbox" disabled>
+          {% endif %}
+            {{call.student.first_name}} {{call.student.last_name}} <br>
+        {% endfor %}
+      </div>
+    </div>
+    <br><br>
+{% endblock %}

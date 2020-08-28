@@ -18,8 +18,15 @@ from django.urls import path
 from django.conf.urls import include, url
 from django.views.generic.base import RedirectView
 
+
 urlpatterns = [
     path('admin/', admin.site.urls),
-    url(r'^$', RedirectView.as_view(url='/lycee/')),
-    url(r'^lycee/', include('lycee.urls')),
+    url(r'^$', RedirectView.as_view(url='/login')),
+    url(r'^lycee/',include('lycee.urls')),
+    url(r'', include('django.contrib.auth.urls')),
 ]
+
+handler404 = 'mysite.views.error_404'
+handler500 = 'mysite.views.error_500'
+handler403 = 'mysite.views.error_403'
+handler400 = 'mysite.views.error_400'

@@ -24,23 +24,27 @@
 </head>
 
 <body>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <a class="navbar-brand" href="#">Navbar</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+		<a class="navbar-brand" href="#">School</a>
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
   <div class="collapse navbar-collapse" id="navbarNav">
-    <ul class="navbar-nav">
+    <ul class="navbar-nav mr-auto">
       <li class="nav-item {% if request.path == '/lycee/' %} active{% endif %}">
         <a class="nav-link" href="{% url 'index' %}">Home <span class="sr-only">(current)</span></a>
       </li>
+      {% if perms.lycee.add_student %}
       <li class="nav-item {% if request.path == '/lycee/student/create/' %} active{% endif %}">
         <a class="nav-link" href="{% url 'create_student' %}">Create Student</a>
       </li>
+      {% endif %}
       <li class="nav-item {% if request.path == '/lycee/cursus/create/' %} active{% endif %}">
-        <a class="nav-link" href="{% url 'index' %}">Create Cursus</a>
+        <a class="nav-link {% if request.path == '/lycee/history/' %} active{% endif %}" href="{% url 'call_of_roll_history' %}">Call of Roll History</a>
       </li>
     </ul>
+    <div class="float-riht"></div>
+    <span class="text-white align-middle">{{user.get_full_name}}</span><a class="btn btn-outline-danger ml-3" href="/logout">Log Out</a>
   </div>
 </nav>
 	<div class="container">
@@ -49,14 +53,17 @@
 				<h3>{% block title %}{% endblock %}</h3>
 			</div>
 		</header>
-
-		<article class="row">{% block content %}{% endblock %}</article>
-
-    <nav class="navbar fixed-bottom navbar-dark bg-dark d-flex justify-content-center">
+    {% if user.is_authenticated %}
+		{% block content %}{% endblock %}
+    {% else %}
+      <p>You are not logged, please login <a href="/login">Here</a></p>
+    {% endif %}
+  </div>
+  <br>
+   <nav class="navbar fixed-bottom navbar-dark bg-dark d-flex justify-content-center text-white">
           <strong>
-            <a href="{% url 'index' %}" style="color:white;">lycee management</a>
+           lycee management
           </strong>
     </nav>
-  </div>
 </body>
 </html>

@@ -1,0 +1,16 @@
+{% extends "master.html" %}
+
+    {% block title %}
+        <h3>Call of Roll : {{cursus_name}}</h3>
+    {% endblock %}
+    
+    {% block content %}
+      <div class="container">
+        <div class="row">
+          <div class = "col">
+            Call of roll saved. {{count}} students present out of {{total}} <br> <br>
+            <button class="btn btn-outline-primary mr-4"><a href="/lycee/">Homepage</a></button>
+          </div>
+        </div>
+      </div>
+    {% endblock %}
