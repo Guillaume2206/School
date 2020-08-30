@@ -3,7 +3,7 @@
 
 {% if liste%}
   {% block title %}
-    <h3>List of programs</h3>
+    List of programs
   {% endblock %}
 
   {% block content %}
@@ -21,11 +21,14 @@
           </div>
         {% endif %}
       {% endfor %}
-
     {% endfor %}
+    {% if perms.lycee.add_presence %}
       <a class="btn btn-danger mb-2" href="{% url 'particular_call_of_roll' %}">Particular call of roll</a>
       <br>
+    {% endif %}
+    {% if perms.lycee.add_student %}
       <a class="btn btn-primary" href="{% url 'create_student'%}">Create a student</a>
+    {% endif %}
     </div>
   {% endblock %}
 {% else %}

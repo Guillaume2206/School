@@ -10,7 +10,7 @@ class CursusAdmin(admin.ModelAdmin):
   fields = ["scholar_year","name","year_from_bac"]
 
 class PresenceAdmin(admin.ModelAdmin):
-  fields = ["student","date","startTime","reason"]
+  fields = ["student","date","dayhalf","reason"]
 
 class CallOfRollAdmin(admin.ModelAdmin):
   fields = ["student","date","dayhalf","isPresent"]

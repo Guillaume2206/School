@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 {% load static %}
+{% load auth_extras %}
 <html>
 
 <head>
@@ -39,9 +40,11 @@
         <a class="nav-link" href="{% url 'create_student' %}">Create Student</a>
       </li>
       {% endif %}
+      {% if perms.lycee.view_callofroll %}
       <li class="nav-item {% if request.path == '/lycee/cursus/create/' %} active{% endif %}">
         <a class="nav-link {% if request.path == '/lycee/history/' %} active{% endif %}" href="{% url 'call_of_roll_history' %}">Call of Roll History</a>
       </li>
+      {% endif %}
     </ul>
     <div class="float-riht"></div>
     <span class="text-white align-middle">{{user.get_full_name}}</span><a class="btn btn-outline-danger ml-3" href="/logout">Log Out</a>

@@ -7,12 +7,6 @@ from django.views.generic.edit import UpdateView
 from django.urls import reverse
 from django.shortcuts import get_object_or_404
 from django.utils.timezone import now
-from django.utils import timezone, dateformat
-
-import logging
-
-# Get an instance of a logger
-logger = logging.getLogger(__name__)
 
 # Create your views here.
 # index : variante avec template intEgrE
@@ -34,12 +28,14 @@ def detail(request, cursus_id):
   return render (request, 'lycee/cursus/detail_cursus.html', context)
 
 def detail_student(request,student_id):
-  checkUserAuth(request)
-  #result_list = Student.objects.get(pk=student_id)
-  result_list = get_object_or_404(Student, pk=student_id)
-  # context
-  context = {'student': result_list}
-  return render (request, 'lycee/student/detail_student.html' , context)
+  if request.user.has_perm('app_name.can_add_cost_price'):
+    checkUserAuth(request)
+    result_list = get_object_or_404(Student, pk=student_id)
+    # context
+    context = {'student': result_list}
+    return render (request, 'lycee/student/detail_student.html' , context)
+  else :
+    return reverse ("index")
 
 def call_of_roll_history(request):
   cursus_list = Cursus.objects.all()
@@ -52,7 +48,8 @@ def call_of_roll_history_search(request):
   cursusid = request.POST.get("cursus")
   cursus = Cursus.objects.filter(id=cursusid)
   calls = CallOfRoll.objects.filter(date = datecall).filter(cursus=cursus[0])
-  context = {'calls': calls, 'defaultdate': datecall, 'cursus':cursus[0]}
+  particular = Presence.objects.filter(date = datecall)
+  context = {'calls': calls, 'defaultdate': datecall, 'cursus':cursus[0], 'particulars':particular}
   return render (request, 'lycee/callofroll/call_of_roll_history_search.html' , context)
 
 class StudentCreateView(CreateView):
@@ -65,7 +62,7 @@ class StudentCreateView(CreateView):
 
   # page appelee si creation ok
   def get_success_url(self):
-    return reverse ("index", args=(self.object.pk,))
+    return reverse ("index")
 
 class CallOfRollView(CreateView):
   # ref au modEle
@@ -76,10 +73,10 @@ class CallOfRollView(CreateView):
   template_name = 'lycee/callofroll/call_of_roll.html'
 
   def get_context_data(self, **kwargs):
-        ctx = super(CallOfRollView, self).get_context_data(**kwargs)
+        context = super(CallOfRollView, self).get_context_data(**kwargs)
         cursus_id = self.kwargs['cursus_id']
-        ctx['cursus'] = Cursus.objects.filter(id=cursus_id)[0]
-        return ctx
+        context['cursus'] = Cursus.objects.filter(id=cursus_id)[0]
+        return context
   
   def get_form_kwargs(self):
         kwargs = super( CallOfRollView, self).get_form_kwargs()
@@ -89,18 +86,16 @@ class CallOfRollView(CreateView):
         
   # Called page if creation success
   def get_success_url(self):
-    return reverse ("index", args=(self.object.pk,))
+    return reverse ("index")
 
   # When the form is submit, save it or redirect
   def form_valid(self, form):
       cursus_id = self.kwargs['cursus_id']
       dayhalf = self.request.POST.get("dayhalf")
-      todaydate = dateformat.format(timezone.now(), 'Y-m-d')
-      todayCOR = CallOfRoll.objects.filter(cursus=cursus_id, dayhalf=dayhalf, date=todaydate)
-      
+      date = self.request.POST.get("date")
+      todayCOR = CallOfRoll.objects.filter(cursus=cursus_id, dayhalf=dayhalf, date=date)
       if not todayCOR:
         students = Student.objects.filter(cursus=cursus_id)
-        date = self.request.POST.get("date")
         cursus = Cursus.objects.filter(id=cursus_id)[0]
         count = 0
         for student in students:
@@ -122,8 +117,6 @@ class CallOfRollView(CreateView):
         context = {'dayhalf': dayhalf ,'cursus_name': Cursus.objects.filter(id=cursus_id)[0].name}
         return render (self.request, 'lycee/callofroll/call_of_rollKO.html', context)
 
-        
-
 class ParticularCallOfRollCreateView(CreateView):
   # ref au modEle
   model = Presence
@@ -134,13 +127,13 @@ class ParticularCallOfRollCreateView(CreateView):
 
   # page appelee si creation ok
   def get_success_url(self):
-    return reverse ("index", args=(self.object.pk,))
+    return reverse ("index")
 
 class StudentEditView(UpdateView):
   # ref au modEle
   model = Student
   # ref au formulaire
-  form_class = PresenceForm
+  form_class = StudentForm
   # le nom du render
   template_name = "lycee/student/student_update_form.html"
 
@@ -153,7 +146,6 @@ class StudentEditView(UpdateView):
 def checkUserAuth(request):
   if not request.user.is_authenticated:
     return HttpResponseForbidden()
-
 
 
   

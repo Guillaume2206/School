@@ -46,7 +46,6 @@ class Student(models.Model):
     help_text="last name of the student",
     blank=False, # pas de champ vide
     null=False, # pas de champ null (a conjuguer avec default
-    default="???",
     max_length=255, # taille maximale du champ
     )
   phone = models.CharField(
@@ -70,7 +69,6 @@ class Student(models.Model):
     help_text="some comments about the student",
     blank=True,
     null=False, # pas de champ null (a conjuguer avec default
-    default="",
     max_length=255, # taille maximale du champ
     )
   cursus = models.ForeignKey(
@@ -87,15 +85,15 @@ class Presence(models.Model):
     on_delete=models.CASCADE,
     null=False
   )
-  date = models.CharField(
+  date = models.DateField(
     verbose_name="date",
     help_text="missing date",
     blank=False,
     null=True,
-    max_length=255, # taille maximale du champ
   )
-  isMissing = models.BooleanField(
-    verbose_name = "Missing"
+  dayhalf = models.CharField(
+    max_length=9, choices=AM_OR_PM,
+    default='1'
   )
   reason = models.CharField(
     verbose_name="Reason",

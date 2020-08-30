@@ -20,6 +20,10 @@ class StudentForm(ModelForm):
       "cursus",
     )
 
+    widgets = {
+        'birth_date': forms.DateInput(format=('%m/%d/%Y'), attrs={'class':'form-control datepicker', 'placeholder':'Select a date', 'type':'date'}),
+        }
+
 class PresenceForm(ModelForm):
 
   class Meta:
@@ -29,11 +33,13 @@ class PresenceForm(ModelForm):
     # list des champs à éditer
     fields = (
       "reason",
-      "isMissing",
+      "dayhalf",
       "date",
       "student"
     )
-
+    widgets = {
+        'date': forms.DateInput(format=('%m/%d/%Y'), attrs={'class':'form-control', 'placeholder':'Select a date', 'type':'date', 'value':dateformat.format(timezone.now(), 'Y-m-d')}),
+        }
 class CallOfRollForm(ModelForm):
 
     class Meta:

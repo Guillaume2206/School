@@ -1,7 +1,8 @@
 {% extends "master.html" %}
+{% load auth_extras %}
 
 {% block title %}
-<h3>Call of Roll History</h3>
+Call of Roll History
 {% endblock %}
 
 {% block content %}
@@ -15,11 +16,9 @@
       <div class="form-group mx-sm-3 mb-2">
       <select class="form-control" name="cursus" id="cursus">
         {% for cursus in cursus_list %}
-            {% for group in groups %}
-              {% if cursus.name in group.name %}
-                <option value="{{cursus.id}}">{{cursus.name}}</option>
-              {% endif %}
-          {% endfor %}
+            {% if user|has_group:"StudentServiceOffice" or user.is_superuser  %}
+              <option value="{{cursus.id}}">{{cursus.name}}</option>
+            {% endif %}
         {% endfor %}
       </select>
       </div>
