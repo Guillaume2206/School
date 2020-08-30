@@ -4,7 +4,7 @@ requires = ["poetry>=0.12"]
 
 [tool]
 [tool.poetry]
-authors = ["Your Name <you@example.com>"]
+authors = ["Guillaume Da Costa <guillaume.dacosta@limayrac.fr>"]
 description = ""
 name = "django-template"
 version = "0.1.0"

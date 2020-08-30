@@ -28,14 +28,11 @@ def detail(request, cursus_id):
   return render (request, 'lycee/cursus/detail_cursus.html', context)
 
 def detail_student(request,student_id):
-  if request.user.has_perm('app_name.can_add_cost_price'):
-    checkUserAuth(request)
-    result_list = get_object_or_404(Student, pk=student_id)
-    # context
-    context = {'student': result_list}
-    return render (request, 'lycee/student/detail_student.html' , context)
-  else :
-    return reverse ("index")
+  checkUserAuth(request)
+  result_list = get_object_or_404(Student, pk=student_id)
+  # context
+  context = {'student': result_list}
+  return render (request, 'lycee/student/detail_student.html' , context)
 
 def call_of_roll_history(request):
   cursus_list = Cursus.objects.all()
