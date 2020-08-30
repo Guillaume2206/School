@@ -1,17 +1,37 @@
 {% extends "master.html" %}
-{% load staticfiles %}
-{% if liste %}
+{% load static %}
+
+{% if liste%}
   {% block title %}
-    <h3>List of programs</h3>
+    List of programs
   {% endblock %}
 
   {% block content %}
-  
-  <ul>
+    <div class="container mt-3">
     {% for cursus in liste %}
-      <li><a href="/lycee/{{ cursus.id }}"> {{cursus.name}} </a></li>
+      {% for group in groups %}
+        {% if cursus.name in group.name %}
+          <div class="row">
+            <div class = "col">
+              <a href="{% url 'detail' cursus.id %}">{{cursus.name}}</a>
+            </div>
+            <div class = "mr-auto mb-2">
+              <a class="btn btn-warning mr-3" href="{% url 'call_of_roll' cursus.id %}">Call of Roll</a>
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
     {% endfor %}
-  </ul>
+    {% if perms.lycee.add_presence %}
+      <a class="btn btn-danger mb-2" href="{% url 'particular_call_of_roll' %}">Particular call of roll</a>
+      <br>
+    {% endif %}
+    {% if perms.lycee.add_student %}
+      <a class="btn btn-primary" href="{% url 'create_student'%}">Create a student</a>
+    {% endif %}
+    </div>
+  {% endblock %}
 {% else %}
-  <p> no cursus </p>
+  <p> No cursus to show .</p>
+
 {% endif %}

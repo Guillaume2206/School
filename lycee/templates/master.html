@@ -1,30 +1,72 @@
 <!DOCTYPE html>
-{% load staticfiles %}
+{% load static %}
+{% load auth_extras %}
 <html>
-    <head>
-            <title>{{ title}}</title>
-            <meta charset="utf-8" />
-            <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
-        <link rel="stylesheet" type="text/css" href="{% static 'lycee/style.css' %}" />
-    </head>
+<head>
+	<title>{{ title}}</title>
+	<meta charset="utf-8" />
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+	 crossorigin="anonymous">
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+	 crossorigin="anonymous">
 
-    <body>
-        <div class="container">
-            <header class="row">
-                <div class="page-header">
-                    <h3>{% block title %}{% endblock %}</h3>
-                </div>
-            </header>
+	</script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+	 crossorigin="anonymous">
 
-            <article class="row">{% block content %}{% endblock %}</article>
+	</script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+	 crossorigin="anonymous">
 
-            <footer class="navbar-fixed-bottom">
-                <p class="text-center"><strong><a href="/lycee/">lycee management</a></strong></p>
-            </footer>
-        </div>
-    </body>
+	</script>
+
+	<link rel="stylesheet" type="text/css" href="{% static 'lycee/style.css' %}" />
+</head>
+
+<body>
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+		<a class="navbar-brand" href="#">School</a>
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item {% if request.path == '/lycee/' %} active{% endif %}">
+        <a class="nav-link" href="{% url 'index' %}">Home <span class="sr-only">(current)</span></a>
+      </li>
+      {% if perms.lycee.add_student %}
+      <li class="nav-item {% if request.path == '/lycee/student/create/' %} active{% endif %}">
+        <a class="nav-link" href="{% url 'create_student' %}">Create Student</a>
+      </li>
+      {% endif %}
+      {% if perms.lycee.view_callofroll %}
+      <li class="nav-item {% if request.path == '/lycee/cursus/create/' %} active{% endif %}">
+        <a class="nav-link {% if request.path == '/lycee/history/' %} active{% endif %}" href="{% url 'call_of_roll_history' %}">Call of Roll History</a>
+      </li>
+      {% endif %}
+    </ul>
+    <div class="float-riht"></div>
+    <span class="text-white align-middle">{{user.get_full_name}}</span><a class="btn btn-outline-danger ml-3" href="/logout">Log Out</a>
+  </div>
+</nav>
+	<div class="container">
+		<header class="row">
+			<div class="page-header mt-2">
+				<h3>{% block title %}{% endblock %}</h3>
+			</div>
+		</header>
+    {% if user.is_authenticated %}
+		{% block content %}{% endblock %}
+    {% else %}
+      <p>You are not logged, please login <a href="/login">Here</a></p>
+    {% endif %}
+  </div>
+  <br>
+   <nav class="navbar fixed-bottom navbar-dark bg-dark d-flex justify-content-center text-white">
+          <strong>
+           lycee management
+          </strong>
+    </nav>
+</body>
 </html>

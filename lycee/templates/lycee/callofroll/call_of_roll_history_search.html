@@ -1,0 +1,54 @@
+{% extends "lycee/callofroll/call_of_roll_history.html" %}
+
+{% block inputdate %}
+      <h3 class="d-flex justify-content-center">{{defaultdate}} : {{cursus.name}}</h3>
+{% endblock %}
+
+{% block search %}
+    <div class="row mt-4">
+      <div class="col text-center">
+        <h4>Morning</h4>
+        {% for call in calls %}
+          {% if call.dayhalf == 'MORNING' %}
+            {{call.student.first_name}} {{call.student.last_name}}
+            {% if call.isPresent %}
+              <input type="checkbox" checked disabled>
+            {% else %}
+              <input type="checkbox" disabled>
+            {% endif %}
+            <br>
+          {% endif %}
+        {% endfor %}
+      </div>
+      <div class="col text-center">
+        <h4>Afternoon</h4>
+        {% for call in calls %}
+          {% if call.dayhalf == 'AFTERNOON' %}
+            {{call.student.first_name}} {{call.student.last_name}}
+            {% if call.isPresent %}
+              <input type="checkbox" checked disabled>
+            {% else %}
+              <input type="checkbox" disabled>
+            {% endif %}
+            <br>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+    <div class="row justify-content-center mb-2"><h4>Particular Call of Roll</h4></div>
+    <div class="row mb-3 justify-content-center">
+      {% for particular in particulars %}
+      <div class="card text-white bg-secondary mb-3 mr-2" style="width: 18rem;">
+        <div class="card-header">{{particular.student.first_name}} {{particular.student.last_name}}</div>
+        <div class="card-body">
+          <h5 class="card-title">{{particular.dayhalf|title}}</h5>
+          <p class="card-text">{{particular.reason}}</p>
+        </div>
+      </div>
+        {% if forloop.counter0|divisibleby:3 %}
+          <br>
+        {% endif %}
+      {% endfor %}
+    </div>
+    <br><br>
+{% endblock %}
