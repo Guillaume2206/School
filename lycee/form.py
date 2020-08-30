@@ -21,7 +21,7 @@ class StudentForm(ModelForm):
     )
 
     widgets = {
-        'birth_date': forms.DateInput(format=('%m/%d/%Y'), attrs={'class':'form-control datepicker', 'placeholder':'Select a date', 'type':'date'}),
+        'birth_date': forms.DateInput(format=('%Y-%m-%d'), attrs={'class':'form-control datepicker', 'type':'date'}),
         }
 
 class PresenceForm(ModelForm):

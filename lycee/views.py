@@ -45,7 +45,7 @@ def call_of_roll_history_search(request):
   cursusid = request.POST.get("cursus")
   cursus = Cursus.objects.filter(id=cursusid)
   calls = CallOfRoll.objects.filter(date = datecall).filter(cursus=cursus[0])
-  particular = Presence.objects.filter(date = datecall)
+  particular = Presence.objects.filter(date = datecall).filter(student__cursus=cursusid)
   context = {'calls': calls, 'defaultdate': datecall, 'cursus':cursus[0], 'particulars':particular}
   return render (request, 'lycee/callofroll/call_of_roll_history_search.html' , context)
 

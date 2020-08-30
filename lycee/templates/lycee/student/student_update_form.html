@@ -14,9 +14,9 @@
         
         {{ form|crispy }}
 
-        <div class="boutons mb-3">
-            <button class="button radius btn-alert left" type="cancel"><a href="/lycee/">Cancel</a></button>
-            <button class="button radius btn-success right" type="submit">Submit</button>
+        <div class="boutons row">
+            <button class="btn btn-outline-primary mr-4"><a href="/lycee/">Cancel</a></button>
+            <button type="submit" class="btn btn-success radius d-flex">Submit</button>
         </div>
     </form>
     {% endblock %}
